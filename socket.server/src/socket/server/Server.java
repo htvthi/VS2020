@@ -10,6 +10,9 @@ import java.net.Socket;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import socket.server.protocol.HelloWorldProtocol;
+import socket.server.protocol.Protocol;
+
 public class Server {
 	
 	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
@@ -59,9 +62,11 @@ public class Server {
 	private void processClientMessage(final String clientMessage) throws IOException {
 				
 		System.out.println("Message received from client: " + clientMessage);
-		if(clientMessage.equals("Hello")) {
-			System.out.println("Message was Hello, sending World ");
-			mResponseWriter.write("World");
+		final Protocol helloWorld = new HelloWorldProtocol();
+		final String result = helloWorld.process(clientMessage);
+		if(result != null) {
+			System.out.println("Message was "+ clientMessage + " response is " + result);
+			mResponseWriter.write(result);
 			mResponseWriter.println();
 			mResponseWriter.flush();
 		}	
