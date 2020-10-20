@@ -12,24 +12,18 @@ import java.util.concurrent.Executors;
 public class Client {
 	
 	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
-	private final Executor executor = Executors.newCachedThreadPool();
 	
 	public void openConnection() {
 		
-		executor.execute(new Runnable() {
-			
-			@Override
-			public void run() {
-				try(final Socket socket = new Socket();) {
-					System.out.println("Starting client...");
-					socket.connect(serverAddress);
-					System.out.println("Client connected to a server on " + serverAddress);
-					talkWithServer(socket);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}				
-			}
-		});
+		try(final Socket socket = new Socket();) {
+			System.out.println("Starting client...");
+			socket.connect(serverAddress);
+			System.out.println("Client connected to a server on " + serverAddress);
+			talkWithServer(socket);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	
 	}
 
 	private void talkWithServer(final Socket socket) {

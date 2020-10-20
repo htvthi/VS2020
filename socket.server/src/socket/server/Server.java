@@ -16,59 +16,47 @@ import socket.server.protocol.Protocol;
 public class Server {
 	
 	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
-	private final Executor executor = Executors.newCachedThreadPool();
 
-	
-	private BufferedReader mRequestReader;
-	private PrintWriter mResponseWriter;
 	
 	public void startListening() {
 		
-		executor.execute(new Runnable() {
+		try(final ServerSocket serverSocket = new ServerSocket()) {
+			
+			System.out.println("Starting server...");
+			serverSocket.bind(serverAddress);
+			System.out.println("Waiting for incoming connection on port " + serverAddress);
+			
+			try(final Socket openSocket = serverSocket.accept();
+					final BufferedReader reader = new BufferedReader(new InputStreamReader(openSocket.getInputStream()));
+					final PrintWriter writer = new PrintWriter(openSocket.getOutputStream());
+			) {
+		
+				System.out.println("Connection established. Waiting for messages.");
 
-			@Override
-			public void run() {
-				try(final ServerSocket serverSocket = new ServerSocket()) {
-					
-					System.out.println("Starting server...");
-					serverSocket.bind(serverAddress);
-					System.out.println("Waiting for incoming connection on port " + serverAddress);
-					
-					try(final Socket openSocket = serverSocket.accept();
-							final BufferedReader reader = new BufferedReader(new InputStreamReader(openSocket.getInputStream()));
-							final PrintWriter writer = new PrintWriter(openSocket.getOutputStream());
-					) {
-						mRequestReader = reader;
-						mResponseWriter = writer;
-						System.out.println("Connection established. Waiting for messages.");
-
-						while(true) {
-							final String clientMessage = mRequestReader.readLine();
-							if(clientMessage != null) {
-								processClientMessage(clientMessage);	
-							}
-						}	
+				while(true) {
+					final String clientMessage = reader.readLine();
+					if(clientMessage != null) {
+						processClientMessage(clientMessage, writer);	
 					}
-					
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}				
+				}	
 			}
 			
-		});
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void processClientMessage(final String clientMessage) throws IOException {
+	private void processClientMessage(final String clientMessage, final PrintWriter writer) throws IOException {
 				
 		System.out.println("Message received from client: " + clientMessage);
 		final Protocol helloWorld = new HelloWorldProtocol();
 		final String result = helloWorld.process(clientMessage);
 		if(result != null) {
 			System.out.println("Message was "+ clientMessage + " response is " + result);
-			mResponseWriter.write(result);
-			mResponseWriter.println();
-			mResponseWriter.flush();
+			writer.write(result);
+			writer.println();
+			writer.flush();
 		}	
 	}
 
