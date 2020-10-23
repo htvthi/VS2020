@@ -7,17 +7,21 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import socket.server.protocol.HelloWorldProtocol;
+import socket.server.protocol.MathServiceProtocol;
 import socket.server.protocol.Protocol;
 
 public class Server {
-	
-	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
+
+
+	private static final String DEFAULT_ERROR_MESSAGE = "Das habe ich leider nicht verstanden.";
+	private static final String CHOOSE_SERVICE_MESSAGE = "Hi Client, welchen mathe Service möchtest du nutzen? (z.B. '+ 4 12')";
 
 	
+	
+	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
+	private Protocol mathServiceProtocol = new MathServiceProtocol();
+
+
 	public void startListening() {
 		
 		try(final ServerSocket serverSocket = new ServerSocket()) {
@@ -30,34 +34,42 @@ public class Server {
 					final BufferedReader reader = new BufferedReader(new InputStreamReader(openSocket.getInputStream()));
 					final PrintWriter writer = new PrintWriter(openSocket.getOutputStream());
 			) {
-		
-				System.out.println("Connection established. Waiting for messages.");
-
-				while(true) {
-					final String clientMessage = reader.readLine();
-					if(clientMessage != null) {
-						processClientMessage(clientMessage, writer);	
-					}
-				}	
+				System.out.println("Connection established.");
+				sayClientWhichServiceIsAvailable(writer);
+				continueCommunicateWithClient(reader, writer);
 			}
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void processClientMessage(final String clientMessage, final PrintWriter writer) throws IOException {
-				
-		System.out.println("Message received from client: " + clientMessage);
-		final Protocol helloWorld = new HelloWorldProtocol();
-		final String result = helloWorld.process(clientMessage);
-		if(result != null) {
-			System.out.println("Message was "+ clientMessage + " response is " + result);
-			writer.write(result);
-			writer.println();
-			writer.flush();
-		}	
+	private void sayClientWhichServiceIsAvailable(final PrintWriter writer) throws IOException {
+		
+		sendMessageToClient(CHOOSE_SERVICE_MESSAGE, writer);
 	}
 
+	private void continueCommunicateWithClient(final BufferedReader reader, final PrintWriter writer) throws IOException {
+		
+		while(true) {
+			final String clientMessage = reader.readLine();
+			if(clientMessage != null) {
+				System.out.println("Message received from client: " + clientMessage);
+				final String response = mathServiceProtocol.process(clientMessage);
+				
+				if(response == null) {
+					sendMessageToClient(DEFAULT_ERROR_MESSAGE, writer);
+				} else {
+					sendMessageToClient(response, writer);
+				}
+			}
+		}
+	}
+	
+
+	private void sendMessageToClient(final String response, final PrintWriter writer) {
+		writer.write(response);
+		writer.println();
+		writer.flush();		
+	}
 }

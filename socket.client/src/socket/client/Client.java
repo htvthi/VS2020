@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 
 public class Client {
 	
@@ -30,16 +32,21 @@ public class Client {
 		
 		System.out.println("Sending 'Hello' message to server...");
 		try(final BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			final PrintWriter writer = new PrintWriter(socket.getOutputStream());) {
-			writer.write("Hello");
-			writer.println();
-			writer.flush();
+			final PrintWriter writer = new PrintWriter(socket.getOutputStream());
+				final Scanner scanner = new Scanner(System.in);){
+			//writer.write("Hello");
+			
 			
 			while(true) {
 				final String response = reader.readLine();
 				if(response != null) {
-					System.out.println("Server response was " + response);
+					System.out.println("Server: " + response);
+					final String userInput = scanner.nextLine();
+					writer.write(userInput);
+					writer.println();
+					writer.flush();
 				}
+
 			}		
 		}
 		catch (IOException e) {
