@@ -1,6 +1,7 @@
 package socket.server.protocol;
 
 
+// Mathe-service, der 3 Services bereitstellt
 public class MathServiceProtocol implements Protocol {
 	
 	
@@ -9,6 +10,7 @@ public class MathServiceProtocol implements Protocol {
 	private static final String SUB = "-";
 	
 
+	// Wenn Nutzer z.B. "+" eingibt, wird die processAdd() Methode aufgerufen
 	@Override
 	public String process(final String input) {
 
@@ -32,6 +34,7 @@ public class MathServiceProtocol implements Protocol {
 
 	}
 	
+	//extrahiert Zahlen aus dem String
 	private String[] extractNumbers(String input) 
 	{
 		final String inputWithoutOperand = input.substring(1); // Operator wird entfernt
@@ -41,6 +44,7 @@ public class MathServiceProtocol implements Protocol {
 	}
 	
 	
+	// Addition und Ergebnisbereitstellung
 	private String processAdd(String input){
 		
 		final String[] numbersAsStrings = extractNumbers(input);
@@ -59,7 +63,7 @@ public class MathServiceProtocol implements Protocol {
 	}
 
 	
-	
+	//Subtraktion und Ergebnisbereitstellung
 	private String processSub(String input) {
 		
 		final String[] numbersAsStrings = extractNumbers(input);
@@ -74,6 +78,7 @@ public class MathServiceProtocol implements Protocol {
  		return "Das Ergebnis ist: " + result;
 	}
 	
+	//Multiplikation und Bereitstellung
 	private String processMul(String input) {
 		
 		final String[] numbersAsStrings = extractNumbers(input);

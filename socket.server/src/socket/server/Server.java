@@ -13,6 +13,7 @@ import socket.server.protocol.Protocol;
 public class Server {
 
 
+	// Kommunikation mit Client, um zu erklären wie die app funktioniert
 	private static final String DEFAULT_ERROR_MESSAGE = "Das habe ich leider nicht verstanden.";
 	private static final String CHOOSE_SERVICE_MESSAGE = "Hi Client, welchen mathe Service möchtest du nutzen? (z.B. '+ 4 12')";
 
@@ -44,11 +45,13 @@ public class Server {
 		}
 	}
 
+	// teilt dem Client mit, welche Services verfügbar sind
 	private void sayClientWhichServiceIsAvailable(final PrintWriter writer) throws IOException {
 		
 		sendMessageToClient(CHOOSE_SERVICE_MESSAGE, writer);
 	}
 
+	// Client schreibt etwas, Server reagiert
 	private void continueCommunicateWithClient(final BufferedReader reader, final PrintWriter writer) throws IOException {
 		
 		while(true) {
@@ -66,7 +69,7 @@ public class Server {
 		}
 	}
 	
-
+    //Nachricht vom Protocol geht an den Server
 	private void sendMessageToClient(final String response, final PrintWriter writer) {
 		writer.write(response);
 		writer.println();
