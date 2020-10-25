@@ -30,11 +30,12 @@ public class Client {
 
 	private void talkWithServer(final Socket socket) {
 		
+		// reader + writer + Erzeugen eines Scanners, damit der Nutzer Nachrichten an den Server schicken kann
 		System.out.println("Sending 'Hello' message to server...");
 		try(final BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			final PrintWriter writer = new PrintWriter(socket.getOutputStream());
 				final Scanner scanner = new Scanner(System.in);){
-			//writer.write("Hello");
+			
 			
 			
 			while(true) {

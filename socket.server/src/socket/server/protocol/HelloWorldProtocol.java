@@ -4,7 +4,7 @@ public class HelloWorldProtocol implements Protocol {
 
 	@Override
 	public String process(String input) {
-		if(input.equals("Hello"))
+		if(input.contains("Hello"))
 		{
 			return "World";
 		}

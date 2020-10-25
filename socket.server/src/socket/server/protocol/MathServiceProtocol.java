@@ -4,7 +4,7 @@ package socket.server.protocol;
 // Mathe-service, der 3 Services bereitstellt
 public class MathServiceProtocol implements Protocol {
 	
-	
+	//3 Konstanten für die Services Add, Mul, Sub
 	private static final String ADD = "+";
 	private static final String MUL = "*";
 	private static final String SUB = "-";
@@ -53,6 +53,7 @@ public class MathServiceProtocol implements Protocol {
 		
 		for(String numberAsString : numbersAsStrings)
 		{
+			//Value.of(), um aus dem String Zahlen zu machen, mit denen man rechnen kann
 			final double number = Double.valueOf(numberAsString);
 			result = result + number;
 			
@@ -83,7 +84,7 @@ public class MathServiceProtocol implements Protocol {
 		
 		final String[] numbersAsStrings = extractNumbers(input);
 		
-		double result = 1;
+		double result = 1; //1, da es multipliziert wird und bei 0 immer 0 rauskommen würdes
 		
 		for(String numberAsString : numbersAsStrings) {
 			
