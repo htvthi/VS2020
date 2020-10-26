@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 
 public class Client {
 	
+	// Server-Adresse wird definiert
 	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
 	
 	public void openConnection() {
@@ -37,7 +38,7 @@ public class Client {
 				final Scanner scanner = new Scanner(System.in);){
 			
 			
-			
+			// Die nächste Nachricht vom Server wird gelesen und wenn sie nicht null ist, wird sie ausgegeben
 			while(true) {
 				final String response = reader.readLine();
 				if(response != null) {

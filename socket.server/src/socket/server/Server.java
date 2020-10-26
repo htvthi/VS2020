@@ -23,7 +23,7 @@ public class Server {
 
 	
 	private final InetSocketAddress serverAddress = new InetSocketAddress("localhost", 1024);
-	//...
+	// Erzeugen der Protokolle helloWorld und mathService, damit beides unabhängig voneinander genutzt werden kann
 	private Protocol helloWorldProtocol = new HelloWorldProtocol();
 	private Protocol mathServiceProtocol = new MathServiceProtocol();
 
@@ -77,7 +77,8 @@ public class Server {
 				//wenn Response immer noch null ist(d.h. der Nutzer hat was anderes eingegeben) --> dann wird Fehlermeldung an den Nutzer geschickt
 				if(response == null) {
 					sendMessageToClient(DEFAULT_ERROR_MESSAGE, writer);
-				} else {
+				} else 
+				{
 					sendMessageToClient(response, writer);
 				}
 			}
