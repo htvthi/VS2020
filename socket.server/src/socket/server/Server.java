@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
+import socket.server.protocol.ExitProtocol;
 import socket.server.protocol.HelloWorldProtocol;
 import socket.server.protocol.MathServiceProtocol;
 import socket.server.protocol.Protocol;
@@ -26,6 +27,7 @@ public class Server {
 	// Erzeugen der Protokolle helloWorld und mathService, damit beides unabhängig voneinander genutzt werden kann
 	private Protocol helloWorldProtocol = new HelloWorldProtocol();
 	private Protocol mathServiceProtocol = new MathServiceProtocol();
+	private Protocol exitProtocol = new ExitProtocol();
 
 	public void startListening() {
 		
@@ -72,6 +74,9 @@ public class Server {
 				String response = helloWorldProtocol.process(clientMessage);
 				if(response == null) {
 					response = mathServiceProtocol.process(clientMessage);
+				}
+				if (response == null) {
+					response = exitProtocol.process(clientMessage);
 				}
 				
 				//wenn Response immer noch null ist(d.h. der Nutzer hat was anderes eingegeben) --> dann wird Fehlermeldung an den Nutzer geschickt
