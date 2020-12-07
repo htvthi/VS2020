@@ -7,6 +7,11 @@ public class Server {
 
 	public void init() {
 
+		/*
+		 * Instanz von HelloWorldImpl wird erzeugt, die das Interface HelloWorld
+		 * implementiert Register wird erzeugt, das man über den Port 1099 aufrufen kann
+		 * HelloWorld Objekt wird unter dem Namen HelloService im Register eingetragen
+		 */
 		try {
 			final HelloWorld helloWorldService = new HelloWorldImpl();
 			Registry registry = LocateRegistry.createRegistry(1099);
