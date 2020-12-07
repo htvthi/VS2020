@@ -13,8 +13,13 @@ public class Server {
 		 * HelloWorld Objekt wird unter dem Namen HelloService im Register eingetragen
 		 */
 		try {
+			// Erzeugen einer HelloWorld Impl-Instanz, welche das HelloWorld Interface
+			// erfüllt
 			final HelloWorld helloWorldService = new HelloWorldImpl();
+			// Erzeugen eines lokalen RMI Registers mit dem Port 1099
 			Registry registry = LocateRegistry.createRegistry(1099);
+			// Bindet die HelloWorldService Instanz an einen Dienst, der via rmi aufgerufen
+			// werden kann
 			registry.rebind("HelloService", helloWorldService);
 
 		} catch (Exception e) {

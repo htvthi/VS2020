@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 public class Client {
 
 	public void connectToServer() {
-		String user = "Zoe";
+		String user = "World";
 		SecurityManager security = System.getSecurityManager();
 
 		if (security != null) {

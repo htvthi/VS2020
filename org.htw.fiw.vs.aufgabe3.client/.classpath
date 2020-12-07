@@ -6,10 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="/rmi.calculator.interfaces">
+	<classpathentry kind="src" path="/org.htw.fiw.vs.aufgabe3.interfaces">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="add-exports" value="rmi.calculator.interfaces/rmi.calculator.interfaces=rmi.calculator.client"/>
+			<attribute name="add-exports" value="org.htw.fiw.vs.aufgabe3.interfaces/org.htw.fiw.vs.aufgabe3.interfaces=org.htw.fiw.vs.aufgabe3.client"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>

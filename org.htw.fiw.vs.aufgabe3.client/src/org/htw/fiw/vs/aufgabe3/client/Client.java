@@ -1,4 +1,4 @@
-package rmi.calculator.client;
+package org.htw.fiw.vs.aufgabe3.client;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -6,7 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
-import rmi.calculator.interfaces.Calculator;
+import org.htw.fiw.vs.aufgabe3.interfaces.Calculator;
 
 public class Client {
 
@@ -32,15 +32,18 @@ public class Client {
 
 	private void promptUserForCalculation(Calculator calculator) {
 
+		// Erzeugen einer Scanner-Instanz
 		Scanner myScanner = new Scanner(System.in);
-		System.out.println("connected to server. Please input your mathematical calculation");
+		System.out.println("Mit Server verbunden. Bitte gebe deine mathematische Berechnung ein(z.B. '4 + 12')");
 
 		while (true) {
 
 			try {
 				String input = myScanner.nextLine();
+				// calculate-Klasse wird aufgerufen mit User-Input als Parameter
+				// (Calculator-Klasse Impl)
 				String result = calculator.calculate(input);
-				System.out.println("The result of the calculation is " + result);
+				System.out.println("Das Ergebnis der Berechnung ist: " + result);
 
 			} catch (RemoteException e) {
 				e.printStackTrace();
@@ -51,6 +54,9 @@ public class Client {
 
 	public static void main(String[] args) {
 
+		/*
+		 * Erzeugen einer Client-Instanz mit Server verbinden
+		 */
 		Client client = new Client();
 		client.connectToServer();
 	}
